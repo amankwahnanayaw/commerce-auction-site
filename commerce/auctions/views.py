@@ -4,11 +4,56 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User
+from .models import User, Listing, Category
 
 
 def index(request):
-    return render(request, "auctions/index.html")
+    activeListing = Listing.object.filter(isActive=True)
+    allCategories = Category.object.all()
+    return render(request, "auctions/index.html", {
+        "listings": activeListing,
+        "categories": allCategories
+    })
+
+
+def createListing(request):
+    if request.method == "GET":
+        allCategories = Category.object.all()
+        render(request, "auctions/create.html", {
+            "categories": allCategories
+        })
+    else:
+        title = request.POST["title"]
+        description = request.POST["description"]
+        imageurl = request.POST["imageurl"]
+        price = request.POST["price"]
+        category = request.POST["category"]
+        currentUser = request.user
+
+        newListing = Listing(
+            title=title,
+            description=description,
+            imageUrl=imageurl,
+            price=float(price),
+            owner=currentUser,
+            category=category
+        )
+        newListing.save()
+
+        return HttpResponseRedirect(reverse(index))
+
+
+def displayCategory(request):
+    if request.method == "POST":
+        categoryFromForm = request.POST["category"]
+        category = Category.objects.get(categoryName=categoryFromForm)
+        activeListings = Listing.objects.filter(
+            isActive=True, category=category)
+        allCategories = Category.objects.all()
+        return render(request, "auctions/index.html", {
+            "listings": activeListings,
+            "categories": allCategories
+        })
 
 
 def login_view(request):
