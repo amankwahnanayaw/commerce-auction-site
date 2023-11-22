@@ -13,7 +13,7 @@
                 {% csrf_token %}
                 <button type="submit" class="btn btn-success">Add To Watchlist</button>
             </form>
-            {% enif %}
+            {% endif %}
         {% endif %}
     </div>
 
@@ -23,12 +23,27 @@
     <p>Owner: {{ listing.owner }}</p>
     <h3>${{ listing.price }}</h6>
     
-    <div class="row mx-3">
-        <h2>Comments</h2>
-        {% if user.is_authenticated %}
-            <form action="{% url 'addComment' id=listing.id %}" method="post">
+    
+    <h2>Comments</h2>
+    <br>
+    {% if user.is_authenticated %}
+        <form action="{% url 'addComment' id=listing.id %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="price">Add Comment</label>
                 <input type="text" name="newComment" placeholder="Add New Comment">
-            </form>
-        {% enif %}
-    </div>
+                <button type="submit" class="btn btn-warning">Add</button>
+            </div>
+        </form>
+    {% endif %}
+    <br>
+    <ul class="list-group">
+        {% for comment in allComment %}
+            <li class="list-group-item">
+                {{ comment.message }}
+                <br>
+                <p>Posted by<strong> {{ comment.author }}</strong></p>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
