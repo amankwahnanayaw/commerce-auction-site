@@ -1,13 +1,17 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
-    <div class="row">
+    <div class="row mx-2">
         {% if user.is_authenticated %}
             {% if isListingInWatchlist %}
             <form action="{% url 'removeWatchlist' id=listing.id%}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Remove From Watchlist</button>
-
+            </form>
+            {% else %}
+            <form action="{% url 'addWatchlist' id=listing.id%}" method="post">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-success">Add To Watchlist</button>
             </form>
             {% enif %}
         {% endif %}
