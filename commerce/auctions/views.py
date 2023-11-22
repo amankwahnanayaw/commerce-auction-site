@@ -9,8 +9,10 @@ from .models import User, Listing, Category
 
 def listing(request, id):
     listingInfo = Listing.object.get(pk=id)
+    isListingInWatchlist = True
     return render(request, "auctions/listing.html", {
-        "listing": listingInfo
+        "listing": listingInfo,
+        "isListingInWatchlist": isListingInWatchlist
     })
 
 
