@@ -4,7 +4,7 @@
     <div class="row mx-2">
         {% if user.is_authenticated %}
             {% if isListingInWatchlist %}
-            <form action="{% url 'removeWatchlist' id=listing.id%}" method="post">
+            <form action="{% url 'removeWatchlist' id=listing.id %}" method="post">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Remove From Watchlist</button>
             </form>
@@ -23,4 +23,12 @@
     <p>Owner: {{ listing.owner }}</p>
     <h3>${{ listing.price }}</h6>
     
+    <div class="row mx-3">
+        <h2>Comments</h2>
+        {% if user.is_authenticated %}
+            <form action="{% url 'addComment' id=listing.id %}" method="post">
+                <input type="text" name="newComment" placeholder="Add New Comment">
+            </form>
+        {% enif %}
+    </div>
 {% endblock %}
