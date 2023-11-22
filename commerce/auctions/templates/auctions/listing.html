@@ -21,8 +21,18 @@
     <img src="{{ listing.imageUrl }}" alt="{{ listing.title }}" height="400px">
     <p>{{ listing.description }}</p>
     <p>Owner: {{ listing.owner }}</p>
-    <h3>${{ listing.price }}</h6>
-    
+    <h3>Initial Price: ${{ listing.price.bid }}</h6>
+    {% if user.is_authenticated %}
+        <form action="{% url 'addBid' id=listing.id %}" method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="price">Add Bid</label>
+                <input type="number" min="0" name="newBid" placeholder="Add New Bid">
+                <button type="submit" class="btn btn-warning">Add</button>
+            </div>
+        </form>
+    {% endif %}
+    <p></p>
     
     <h2>Comments</h2>
     <br>

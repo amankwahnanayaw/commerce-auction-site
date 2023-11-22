@@ -4,7 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import User, Listing, Category, Comment
+from .models import User, Listing, Category, Comment, Bid
 
 
 def listing(request, id):
@@ -55,6 +55,28 @@ def addComment(request, id):
     return HttpResponseRedirect(reverse("listing", args=(id)))
 
 
+def addBid(request, id):
+    newBid = request.POST["newBid"]
+    listingInfo = Listing.objects.get(pk=id)
+
+    if int(newBid) > listingInfo.price.bid:
+        updateBid = Bid(user=request.user, bid=newBid)
+        updateBid.save()
+        listingInfo.price = updateBid
+        listingInfo.save()
+        return render(request, "auctions/listing.html", {
+            "listing": listingInfo,
+            "message": "Bid was updated successfully",
+            "update": True
+        })
+    else:
+        return render(request, "auctions/listing.html", {
+            "listing": listingInfo,
+            "message": "Bid was updated failed",
+            "update": False
+        })
+
+
 def index(request):
     activeListing = Listing.object.filter(isActive=True)
     allCategories = Category.object.all()
@@ -78,13 +100,17 @@ def createListing(request):
         category = request.POST["category"]
         currentUser = request.user
 
+        categoryInfo = Category.objects.get(categoryName=category)
+        bid = Bid(bid=int(price), user=currentUser)
+        bid.save()
+
         newListing = Listing(
             title=title,
             description=description,
             imageUrl=imageurl,
-            price=float(price),
+            price=bid,
             owner=currentUser,
-            category=category
+            category=categoryInfo
         )
         newListing.save()
 
