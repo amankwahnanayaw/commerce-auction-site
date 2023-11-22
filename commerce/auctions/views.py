@@ -30,6 +30,14 @@ def addWatchlist(request, id):
     return HttpResponseRedirect(reverse("listing", args=(id)))
 
 
+def displayWatchlist(request):
+    currentUser = request.user
+    listings = currentUser.listingWatchlist.all()
+    return render(request, "auction/watchlist.html", {
+        "listings": listings
+    })
+
+
 def index(request):
     activeListing = Listing.object.filter(isActive=True)
     allCategories = Category.object.all()
