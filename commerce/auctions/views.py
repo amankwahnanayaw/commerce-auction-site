@@ -21,7 +21,7 @@ def listing(request, id):
 
 
 def closeAuction(request, id):
-    return
+    listingInfo = Listing.objects.get(pk=id)
 
 
 def removeWatchlist(request, id):
