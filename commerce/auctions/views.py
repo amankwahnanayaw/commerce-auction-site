@@ -11,10 +11,12 @@ def listing(request, id):
     listingInfo = Listing.object.get(pk=id)
     isListingInWatchlist = request.user in listingInfo.watchlist.all()
     allComments = Comment.object.filter(listing=listingInfo)
+    isOwner = request.user.username == listingInfo.user.username
     return render(request, "auctions/listing.html", {
         "listing": listingInfo,
         "isListingInWatchlist": isListingInWatchlist,
-        "allComments": allComments
+        "allComments": allComments,
+        "isOwner": isOwner
     })
 
 
