@@ -16,11 +16,11 @@
 
     </div>
     <div class="row mx-2">
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and listing.isActive %}
             {% if isOwner %}
             <form action="{% url 'closeAuction' id=listing.id %}" method="post" class="mx-3">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-danger">Close</button>
+                <button type="submit" class="btn btn-danger">Close Auction</button>
             </form>
             {% endif %}
             {% if isListingInWatchlist %}
