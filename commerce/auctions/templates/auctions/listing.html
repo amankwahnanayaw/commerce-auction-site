@@ -18,7 +18,7 @@
     <div class="row mx-2">
         {% if user.is_authenticated %}
             {% if isOwner %}
-            <form action="{% url 'closeAuction' id=listing.id %}" method="post">
+            <form action="{% url 'closeAuction' id=listing.id %}" method="post" class="mx-3">
                 {% csrf_token %}
                 <button type="submit" class="btn btn-danger">Close</button>
             </form>
