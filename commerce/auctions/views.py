@@ -20,6 +20,10 @@ def listing(request, id):
     })
 
 
+def closeAuction(request, id):
+    return
+
+
 def removeWatchlist(request, id):
     listingInfo = Listing.objects.get(pk=id)
     currentUser = request.user
