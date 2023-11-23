@@ -23,6 +23,7 @@ def listing(request, id):
 def closeAuction(request, id):
     listingInfo = Listing.objects.get(pk=id)
     listingInfo.isActive = False
+    listingInfo.save()
 
 
 def removeWatchlist(request, id):
