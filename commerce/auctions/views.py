@@ -56,24 +56,30 @@ def addComment(request, id):
 
 
 def addBid(request, id):
+    isListingInWatchlist = request.user in listingInfo.watchlist.all()
+    allComments = Comment.object.filter(listing=listingInfo)
     newBid = request.POST["newBid"]
     listingInfo = Listing.objects.get(pk=id)
 
     if int(newBid) > listingInfo.price.bid:
-        updateBid = Bid(user=request.user, bid=newBid)
+        updateBid = Bid(user=request.user, bid=int(newBid))
         updateBid.save()
         listingInfo.price = updateBid
         listingInfo.save()
         return render(request, "auctions/listing.html", {
             "listing": listingInfo,
             "message": "Bid was updated successfully",
-            "update": True
+            "update": True,
+            "isListingInWatchlist": isListingInWatchlist,
+            "allComments": allComments
         })
     else:
         return render(request, "auctions/listing.html", {
             "listing": listingInfo,
-            "message": "Bid update failed",
-            "update": False
+            "message2": "Bid update failed",
+            "update": False,
+            "isListingInWatchlist": isListingInWatchlist,
+            "allComments": allComments
         })
 
 

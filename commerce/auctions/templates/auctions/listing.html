@@ -1,6 +1,20 @@
 {% extends "auctions/layout.html" %}
 
 {% block body %}
+    <div class="container">
+        {% if message %}
+            {% if update %}
+                <div class="alert alert-success" role="alert">
+                    {{ message }}
+                </div>
+            {% else %}
+                <div class="alert alert-danger" role="alert">
+                    {{ message2 }}
+                </div>
+            {% endif %}
+        {% endif %}
+
+    </div>
     <div class="row mx-2">
         {% if user.is_authenticated %}
             {% if isListingInWatchlist %}
