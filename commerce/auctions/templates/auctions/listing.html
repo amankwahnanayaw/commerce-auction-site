@@ -13,8 +13,14 @@
                 </div>
             {% endif %}
         {% endif %}
-
     </div>
+
+    {% if not listing.isActive and user == listing.price.user %}
+        <div class="alert alert-success" role="alert">
+            Congratulation! You won th Auction!
+        </div>
+    {% endif %}
+
     <div class="row mx-2">
         {% if user.is_authenticated and listing.isActive %}
             {% if isOwner %}
