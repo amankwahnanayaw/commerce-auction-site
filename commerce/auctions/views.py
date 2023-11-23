@@ -35,7 +35,7 @@ def addWatchlist(request, id):
 def watchlist(request):
     currentUser = request.user
     listings = currentUser.listingWatchlist.all()
-    return render(request, "auction/watchlist.html", {
+    return render(request, "auctions/watchlist.html", {
         "listings": listings
     })
 
@@ -72,14 +72,14 @@ def addBid(request, id):
     else:
         return render(request, "auctions/listing.html", {
             "listing": listingInfo,
-            "message": "Bid was updated failed",
+            "message": "Bid update failed",
             "update": False
         })
 
 
 def index(request):
-    activeListing = Listing.object.filter(isActive=True)
-    allCategories = Category.object.all()
+    activeListing = Listing.objects.filter(isActive=True)
+    allCategories = Category.objects.all()
     return render(request, "auctions/index.html", {
         "listings": activeListing,
         "categories": allCategories
@@ -88,8 +88,8 @@ def index(request):
 
 def createListing(request):
     if request.method == "GET":
-        allCategories = Category.object.all()
-        render(request, "auctions/create.html", {
+        allCategories = Category.objects.all()
+        return render(request, "auctions/create.html", {
             "categories": allCategories
         })
     else:
@@ -114,7 +114,7 @@ def createListing(request):
         )
         newListing.save()
 
-        return HttpResponseRedirect(reverse(index))
+        return HttpResponseRedirect(reverse("index"))
 
 
 def displayCategory(request):
