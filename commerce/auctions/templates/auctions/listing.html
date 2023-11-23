@@ -17,6 +17,8 @@
     </div>
     <div class="row mx-2">
         {% if user.is_authenticated %}
+            {% if isOwner %}
+            {% endif %}
             {% if isListingInWatchlist %}
             <form action="{% url 'removeWatchlist' id=listing.id %}" method="post">
                 {% csrf_token %}
